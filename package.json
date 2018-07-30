@@ -1,39 +1,48 @@
 {
-    "name": "hyperscript-jsx-transformer",
-    "displayName": "hyperscript-jsx-transformer",
-    "description": "transform hyperscript to jsx",
-    "version": "0.0.1",
-    "publisher": "manse",
-    "engines": {
-        "vscode": "^1.25.0"
-    },
-    "categories": [
-        "Other"
-    ],
-    "activationEvents": [
-        "onCommand:extension.sayHello"
-    ],
-    "main": "./out/extension",
-    "contributes": {
-        "commands": [
-            {
-                "command": "extension.sayHello",
-                "title": "Hello World"
-            }
-        ]
-    },
-    "scripts": {
-        "vscode:prepublish": "npm run compile",
-        "compile": "tsc -p ./",
-        "watch": "tsc -watch -p ./",
-        "postinstall": "node ./node_modules/vscode/bin/install",
-        "test": "npm run compile && node ./node_modules/vscode/bin/test"
-    },
-    "devDependencies": {
-        "typescript": "^2.6.1",
-        "vscode": "^1.1.6",
-        "tslint": "^5.8.0",
-        "@types/node": "^7.0.43",
-        "@types/mocha": "^2.2.42"
-    }
+  "name": "hyperscript2jsx-ppoi",
+  "displayName": "hyperscript2jsx-ppoi",
+  "description": "transform hyperscript to jsx",
+  "version": "0.0.1",
+  "license": "MIT",
+  "publisher": "manse",
+  "engines": {
+    "vscode": "^1.25.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:extension.transform-hyperscript-jsx"
+  ],
+  "main": "./out/extension",
+  "contributes": {
+    "commands": [
+      {
+        "command": "extension.transform-hyperscript-jsx",
+        "title": "Transform Hyperscript to JSX"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "postinstall": "node ./node_modules/vscode/bin/install",
+    "test": "npm run compile && node ./node_modules/vscode/bin/test"
+  },
+  "devDependencies": {
+    "@types/mocha": "^2.2.42",
+    "@types/node": "^7.0.43",
+    "@types/prettier": "^1.13.2",
+    "tslint": "^5.8.0",
+    "typescript": "^2.6.1",
+    "vscode": "^1.1.6"
+  },
+  "dependencies": {
+    "prettier": "^1.14.0"
+  },
+  "prettier": {
+    "singleQuote": true,
+    "printWidth": 120
+  }
 }
