@@ -12,13 +12,13 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:extension.transform-hyperscript-jsx"
+    "onCommand:extension.hyperscript2jsx-ppoi"
   ],
   "main": "./out/extension",
   "contributes": {
     "commands": [
       {
-        "command": "extension.transform-hyperscript-jsx",
+        "command": "extension.hyperscript2jsx-ppoi",
         "title": "Transform Hyperscript to JSX"
       }
     ]

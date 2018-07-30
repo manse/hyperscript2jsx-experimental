@@ -24,19 +24,21 @@ function process(node: any, inBrackets = false): string {
       let selectorArg: any;
       let propsArg: any;
       let childrenArgs: any[];
-      if (
-        node.arguments[0].kind === ts.SyntaxKind.StringKeyword ||
-        node.arguments[0].kind === ts.SyntaxKind.StringLiteral ||
-        node.arguments[0].kind === ts.SyntaxKind.TemplateExpression ||
-        node.arguments[0].kind === ts.SyntaxKind.BinaryExpression ||
-        node.arguments[0].kind === ts.SyntaxKind.ExpressionStatement ||
-        node.arguments[0].kind === ts.SyntaxKind.PropertyAccessExpression ||
-        node.arguments[0].kind === ts.SyntaxKind.ConditionalExpression
-      ) {
-        selectorArg = node.arguments.shift();
-      }
-      if (node.arguments[0].kind === ts.SyntaxKind.ObjectLiteralExpression) {
-        propsArg = node.arguments.shift();
+      if (node.arguments[0]) {
+        if (
+          node.arguments[0].kind === ts.SyntaxKind.StringKeyword ||
+          node.arguments[0].kind === ts.SyntaxKind.StringLiteral ||
+          node.arguments[0].kind === ts.SyntaxKind.TemplateExpression ||
+          node.arguments[0].kind === ts.SyntaxKind.BinaryExpression ||
+          node.arguments[0].kind === ts.SyntaxKind.ExpressionStatement ||
+          node.arguments[0].kind === ts.SyntaxKind.PropertyAccessExpression ||
+          node.arguments[0].kind === ts.SyntaxKind.ConditionalExpression
+        ) {
+          selectorArg = node.arguments.shift();
+        }
+        if (node.arguments[0] && node.arguments[0].kind === ts.SyntaxKind.ObjectLiteralExpression) {
+          propsArg = node.arguments.shift();
+        }
       }
       childrenArgs = node.arguments;
 
@@ -55,6 +57,9 @@ function process(node: any, inBrackets = false): string {
           tagName = matched[0];
           props.className = props.className.replace(/^\w+/, '');
         }
+      }
+      if (!tagName) {
+        return `{${print(node)}}`;
       }
       return `<${tagName} ${Object.keys(props)
         .map(p => `${p}={${(props as any)[p]}}`)
@@ -97,7 +102,7 @@ function process(node: any, inBrackets = false): string {
 }
 
 export function activate(context: vscode.ExtensionContext) {
-  let disposable = vscode.commands.registerCommand('extension.transform-hyperscript-jsx', () => {
+  let disposable = vscode.commands.registerCommand('extension.hyperscript2jsx-ppoi', () => {
     try {
       const editor = vscode.window.activeTextEditor;
       if (!editor) {
@@ -107,18 +112,21 @@ export function activate(context: vscode.ExtensionContext) {
       const source = ts.createSourceFile('./chunk.ts', hyperscript, ts.ScriptTarget.ES2015);
       const chunks: string[] = [];
       ts.forEachChild(source, (node: ts.Node) => {
-        console.log(node);
+        // console.log(node);
         chunks.push(process(node));
       });
       const rawJsx = chunks.join('\n');
-      const resultJsx =
+      const resultJsx = (
         prettier.format(rawJsx, {
           semi: false,
           parser: 'typescript'
-        }) || rawJsx;
-      console.log(resultJsx);
+        }) || rawJsx
+      ).replace(/^;/, '');
+      editor.edit(edit => {
+        edit.replace(editor.selection, resultJsx);
+      });
     } catch (e) {
-      console.error(e);
+      vscode.window.showErrorMessage(e.message);
     }
   });
   context.subscriptions.push(disposable);
