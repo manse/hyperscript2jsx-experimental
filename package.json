@@ -6,6 +6,10 @@
   "license": "MIT",
   "publisher": "ryotamannari",
   "icon": "icon/256.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/manse/hyperscript2jsx-ppoi.git"
+  },
   "engines": {
     "vscode": "^1.25.0"
   },
