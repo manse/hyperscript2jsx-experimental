@@ -52,10 +52,10 @@ function process(node: any, inBrackets = false): string {
         });
       }
       if (tagName === 'h' && props.className) {
-        const matched = props.className.match(/^\w+/);
+        const matched = props.className.match(/^["'`](\w+)/);
         if (matched) {
-          tagName = matched[0];
-          props.className = props.className.replace(/^\w+/, '');
+          tagName = matched[1];
+          props.className = props.className.replace(/^(["'`])\w+/, '$1');
         }
       }
       if (!tagName) {
@@ -67,7 +67,6 @@ function process(node: any, inBrackets = false): string {
     case ts.SyntaxKind.ArrayLiteralExpression:
       return (node.elements.map((elem: any) => process(elem)) || []).join('\n');
     case ts.SyntaxKind.StringLiteral:
-      return node.text || '';
     case ts.SyntaxKind.TemplateExpression:
     case ts.SyntaxKind.PropertyAccessExpression:
     case ts.SyntaxKind.NullKeyword:
@@ -115,13 +114,13 @@ export function activate(context: vscode.ExtensionContext) {
         // console.log(node);
         chunks.push(process(node));
       });
-      const rawJsx = chunks.join('\n');
-      const resultJsx = (
-        prettier.format(rawJsx, {
-          semi: false,
+      let resultJsx = chunks.join('\n');
+      try {
+        resultJsx = prettier.format(resultJsx, {
           parser: 'typescript'
-        }) || rawJsx
-      ).replace(/^;/, '');
+        });
+      } catch (e) {}
+      resultJsx = resultJsx.replace(/^;/, '');
       editor.edit(edit => {
         edit.replace(editor.selection, resultJsx);
       });
