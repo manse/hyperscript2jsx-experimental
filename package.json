@@ -1,15 +1,24 @@
 {
   "name": "hyperscript2jsx-ppoi",
   "displayName": "hyperscript2jsx-ppoi",
-  "description": "transform hyperscript to jsx",
-  "version": "0.0.1",
+  "description": "Transform Hyperscript to JSX ppoi",
+  "version": "1.0.0",
   "license": "MIT",
-  "publisher": "manse",
+  "publisher": "ryotamannari",
+  "icon": "icon/256.png",
   "engines": {
     "vscode": "^1.25.0"
   },
   "categories": [
     "Other"
+  ],
+  "keywords": [
+    "hyperscript",
+    "snabbdom",
+    "jsx",
+    "transform",
+    "convert",
+    "experimental"
   ],
   "activationEvents": [
     "onCommand:extension.hyperscript2jsx-ppoi"
@@ -19,7 +28,7 @@
     "commands": [
       {
         "command": "extension.hyperscript2jsx-ppoi",
-        "title": "Transform Hyperscript to JSX"
+        "title": "Transform Hyperscript to JSX ppoi"
       }
     ]
   },
