@@ -2,7 +2,7 @@
   "name": "hyperscript2jsx-experimental",
   "displayName": "hyperscript2jsx-experimental",
   "description": "Transform Hyperscript to JSX",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "license": "MIT",
   "publisher": "ryotamannari",
   "icon": "icon/256.png",

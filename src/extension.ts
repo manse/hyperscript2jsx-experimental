@@ -17,7 +17,7 @@ const print = (() => {
   return (node: any) => printer.printNode(ts.EmitHint.Unspecified, node, resultFile);
 })();
 
-function process(node: any, inBrackets = false): string {
+function process(node: any, option: { inBrackets?: boolean; reactChild?: boolean } = {}): string {
   switch (node.kind) {
     case ts.SyntaxKind.CallExpression:
       let tagName = node.expression.escapedText;
@@ -44,29 +44,54 @@ function process(node: any, inBrackets = false): string {
 
       const props: any = {};
       if (selectorArg) {
-        props.className = print(selectorArg);
+        props.className = selectorArg;
       }
       if (propsArg) {
         propsArg.properties.forEach((prop: any) => {
-          props[prop.name.escapedText] = print(prop.initializer);
+          props[prop.name.escapedText] = prop.initializer;
         });
       }
       if (tagName === 'h' && props.className) {
-        const matched = props.className.match(/^["'`](\w+)/);
+        const classNameString = print(props.className);
+        const matched = classNameString.match(/^["'`](\w+)/);
         if (matched) {
           tagName = matched[1];
-          props.className = props.className.replace(/^(["'`])\w+/, '$1');
+          const value = classNameString.replace(/^(["'`])\w+/, '$1');
+          if (props.className.kind === ts.SyntaxKind.StringLiteral) {
+            props.className = value;
+          } else {
+            props.className = `{${value}}`;
+          }
         }
       }
       if (!tagName) {
         return `{${print(node)}}`;
       }
-      return `<${tagName} ${Object.keys(props)
-        .map(p => `${p}={${(props as any)[p]}}`)
-        .join(' ')}>${childrenArgs.map(child => process(child)).join('\n')}</${tagName}>`;
+      const propsString = Object.keys(props)
+        .map(p => {
+          const value = (props as any)[p];
+          if (typeof value === 'object') {
+            const printed = print(value);
+            if (value.kind === ts.SyntaxKind.StringLiteral) {
+              return `${p}=${printed}`;
+            } else {
+              return `${p}={${printed}}`;
+            }
+          } else {
+            return `${p}=${value}`;
+          }
+        })
+        .join(' ');
+      const children = childrenArgs.map(child => process(child, { reactChild: true })).join('\n');
+      return `<${tagName} ${propsString}>${children}</${tagName}>`;
     case ts.SyntaxKind.ArrayLiteralExpression:
-      return (node.elements.map((elem: any) => process(elem)) || []).join('\n');
+      return (node.elements.map((elem: any) => process(elem, option)) || []).join('\n');
     case ts.SyntaxKind.StringLiteral:
+      if (option.reactChild) {
+        return JSON.parse(print(node));
+      } else {
+        return print(node);
+      }
     case ts.SyntaxKind.TemplateExpression:
     case ts.SyntaxKind.PropertyAccessExpression:
     case ts.SyntaxKind.NullKeyword:
@@ -76,21 +101,26 @@ function process(node: any, inBrackets = false): string {
     case ts.SyntaxKind.StringKeyword:
     case ts.SyntaxKind.TrueKeyword:
     case ts.SyntaxKind.FalseKeyword:
-      if (inBrackets) {
+      if (option.inBrackets) {
         return print(node);
       } else {
         return `{${print(node)}}`;
       }
     case ts.SyntaxKind.BinaryExpression:
-      return `{${process(node.left, true)} /* ${print(node.operatorToken)} */ ${process(node.right, true)}}`;
+      return `{${process(node.left, { inBrackets: true })} /* ${print(node.operatorToken)} */ ${process(node.right, {
+        inBrackets: true
+      })}}`;
     case ts.SyntaxKind.ConditionalExpression:
-      return `{${print(node.condition)} ? (${process(node.whenTrue, true)}) : (${process(node.whenFalse, true)})}`;
+      return `{${print(node.condition)} ? (${process(node.whenTrue, { inBrackets: true })}) : (${process(
+        node.whenFalse,
+        { inBrackets: true }
+      )})}`;
     case ts.SyntaxKind.ExpressionStatement:
     case ts.SyntaxKind.ReturnStatement:
       return process(node.expression);
     default:
       if (node.escapedText) {
-        if (inBrackets) {
+        if (option.inBrackets) {
           return node.escapedText;
         } else {
           return `{${node.escapedText}}`;
@@ -125,10 +155,10 @@ export function activate(context: vscode.ExtensionContext) {
         resultJsx = prettier.format(resultJsx, {
           parser: 'typescript'
         });
-      } catch (e) {}
-      resultJsx = resultJsx.replace(/^;/, '').replace(/(\\u\w+)/g, (_, m) => {
-        return JSON.parse(`"${m}"`);
-      });
+      } catch (e) {
+        console.error(e);
+      }
+      resultJsx = resultJsx.replace(/^;/, '').replace(/(\\u\w+)/g, (_, m) => JSON.parse(`"${m}"`));
       editor.edit(edit => {
         edit.replace(selection, resultJsx);
       });
