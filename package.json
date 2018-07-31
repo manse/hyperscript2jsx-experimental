@@ -2,7 +2,7 @@
   "name": "hyperscript2jsx-ppoi",
   "displayName": "hyperscript2jsx-ppoi",
   "description": "Transform Hyperscript to JSX ppoi",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": "MIT",
   "publisher": "ryotamannari",
   "icon": "icon/256.png",
@@ -21,8 +21,7 @@
     "snabbdom",
     "jsx",
     "transform",
-    "convert",
-    "experimental"
+    "convert"
   ],
   "activationEvents": [
     "onCommand:extension.hyperscript2jsx-ppoi"
