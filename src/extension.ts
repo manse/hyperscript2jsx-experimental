@@ -107,7 +107,13 @@ export function activate(context: vscode.ExtensionContext) {
       if (!editor) {
         return;
       }
-      const hyperscript = editor.document.getText(editor.selection);
+      const selection = editor.selection.isEmpty
+        ? new vscode.Range(
+            editor.document.positionAt(0),
+            editor.document.positionAt(editor.document.getText().length - 1)
+          )
+        : editor.selection;
+      const hyperscript = editor.document.getText(selection);
       const source = ts.createSourceFile('./chunk.ts', hyperscript, ts.ScriptTarget.ES2015);
       const chunks: string[] = [];
       ts.forEachChild(source, (node: ts.Node) => {
@@ -122,7 +128,7 @@ export function activate(context: vscode.ExtensionContext) {
       } catch (e) {}
       resultJsx = resultJsx.replace(/^;/, '');
       editor.edit(edit => {
-        edit.replace(editor.selection, resultJsx);
+        edit.replace(selection, resultJsx);
       });
     } catch (e) {
       vscode.window.showErrorMessage(e.message);
