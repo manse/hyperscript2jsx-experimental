@@ -2,7 +2,7 @@
   "name": "hyperscript2jsx-ppoi",
   "displayName": "hyperscript2jsx-ppoi",
   "description": "Transform Hyperscript to JSX ppoi",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "license": "MIT",
   "publisher": "ryotamannari",
   "icon": "icon/256.png",
@@ -24,13 +24,13 @@
     "convert"
   ],
   "activationEvents": [
-    "onCommand:extension.hyperscript2jsx-ppoi"
+    "onCommand:extension.hyperscript2jsx"
   ],
   "main": "./out/extension",
   "contributes": {
     "commands": [
       {
-        "command": "extension.hyperscript2jsx-ppoi",
+        "command": "extension.hyperscript2jsx",
         "title": "Transform Hyperscript to JSX ppoi"
       }
     ]
