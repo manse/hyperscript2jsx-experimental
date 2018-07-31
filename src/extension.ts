@@ -101,7 +101,7 @@ function process(node: any, inBrackets = false): string {
 }
 
 export function activate(context: vscode.ExtensionContext) {
-  let disposable = vscode.commands.registerCommand('extension.hyperscript2jsx', () => {
+  let disposable = vscode.commands.registerCommand('extension.hyperscript2jsx-ppoi', () => {
     try {
       const editor = vscode.window.activeTextEditor;
       if (!editor) {
