@@ -1,14 +1,14 @@
 {
-  "name": "hyperscript2jsx-ppoi",
-  "displayName": "hyperscript2jsx-ppoi",
-  "description": "Transform Hyperscript to JSX ppoi",
-  "version": "1.0.3",
+  "name": "hyperscript2jsx-experimental",
+  "displayName": "hyperscript2jsx-experimental",
+  "description": "Transform Hyperscript to JSX",
+  "version": "1.0.4",
   "license": "MIT",
   "publisher": "ryotamannari",
   "icon": "icon/256.png",
   "repository": {
     "type": "git",
-    "url": "https://github.com/manse/hyperscript2jsx-ppoi.git"
+    "url": "https://github.com/manse/hyperscript2jsx-experimental.git"
   },
   "engines": {
     "vscode": "^1.25.0"
@@ -24,14 +24,14 @@
     "convert"
   ],
   "activationEvents": [
-    "onCommand:extension.hyperscript2jsx-ppoi"
+    "onCommand:extension.hyperscript2jsx"
   ],
   "main": "./out/extension",
   "contributes": {
     "commands": [
       {
-        "command": "extension.hyperscript2jsx-ppoi",
-        "title": "Transform Hyperscript to JSX ppoi"
+        "command": "extension.hyperscript2jsx",
+        "title": "Transform Hyperscript to JSX"
       }
     ]
   },

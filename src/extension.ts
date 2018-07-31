@@ -8,7 +8,7 @@ const print = (() => {
     newLine: ts.NewLineKind.LineFeed
   });
   const resultFile = ts.createSourceFile(
-    '/tmp/hyperscript2jsx-ppoi-chunk.ts',
+    '/tmp/hyperscript2jsx-chunk.ts',
     '',
     ts.ScriptTarget.Latest,
     false,
@@ -101,7 +101,7 @@ function process(node: any, inBrackets = false): string {
 }
 
 export function activate(context: vscode.ExtensionContext) {
-  let disposable = vscode.commands.registerCommand('extension.hyperscript2jsx-ppoi', () => {
+  let disposable = vscode.commands.registerCommand('extension.hyperscript2jsx', () => {
     try {
       const editor = vscode.window.activeTextEditor;
       if (!editor) {

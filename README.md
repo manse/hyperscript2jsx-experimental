@@ -1,7 +1,7 @@
-# hyperscript2jsx-ppoi
+# hyperscript2jsx-experimental
 
 Transform Hyperscript to JSX like code.
-Select the code written in HyperScript and run `Transform Hyperscript to JSX ppoi` on command palette, then you get JSX-ish snippet.
+Select the code written in HyperScript and run `Transform Hyperscript to JSX` on command palette, then you get JSX-ish snippet.
 
 ## Supported Syntax
 
