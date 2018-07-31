@@ -41,17 +41,17 @@ h('div.dialog', [
 ### Example Output
 
 ```jsx
-<div className={'.dialog'}>
-  <div className={'.dialog__content'}>
-    {'Failed to communicate with the server.'}
+<div className=".dialog">
+  <div className=".dialog__content">
+    Failed to communicate with the server.
     <br />
-    {'Please check the network environment and try again.'}
+    Please check the network environment and try again.
     {env.debug ? 'This is debug message.' : ''}
   </div>
-  <ul className={''}>{[1, 2, 3].map(i => li(`.dialog__item`, 'note: General function calls will not transformed'))}</ul>
+  <ul className="">{[1, 2, 3].map(i => li(`.dialog__item`, 'note: General function calls will not transformed'))}</ul>
   <footer className={dialog.footer}>
     <button className={`.event-click-retry${btn.base + btn.primary}`} disabled={true}>
-      {'Retry'}
+      Retry
     </button>
   </footer>
 </div>
@@ -65,4 +65,9 @@ h('div.dialog', [
 
 ### 1.0.0
 
-Initial release
+- Initial release
+
+### 1.1.0
+
+- Simplify string literal
+  - Changed not to use `{""}` notation as much as possible
