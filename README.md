@@ -1,6 +1,6 @@
 # hyperscript2jsx-ppoi
 
-Transform Hyperscript to like JSX.
+Transform Hyperscript to JSX like code.
 Select the code written in HyperScript and run `Transform Hyperscript to JSX ppoi` on command palette, then you get JSX-ish snippet.
 
 ## Supported Syntax
