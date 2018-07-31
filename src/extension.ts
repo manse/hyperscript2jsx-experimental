@@ -126,7 +126,9 @@ export function activate(context: vscode.ExtensionContext) {
           parser: 'typescript'
         });
       } catch (e) {}
-      resultJsx = resultJsx.replace(/^;/, '');
+      resultJsx = resultJsx.replace(/^;/, '').replace(/(\\u\w+)/g, (_, m) => {
+        return JSON.parse(`"${m}"`);
+      });
       editor.edit(edit => {
         edit.replace(selection, resultJsx);
       });
